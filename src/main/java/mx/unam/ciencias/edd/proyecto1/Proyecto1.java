@@ -60,7 +60,7 @@ public class Proyecto1 {
 			try {
 				FileInputStream fileIn = new FileInputStream(nombreArchivo);
 				InputStreamReader isIn = new InputStreamReader(fileIn);
-				BufferedReader in = new  BufferedReader(isIn);
+				BufferedReader in = new BufferedReader(isIn);
 				carga(in, lineas);		
 				in.close();
 			} catch (IOException ioe) {
@@ -96,20 +96,24 @@ public class Proyecto1 {
 	}
 
 	public static void main(String[] args) {
-		if ( args.length == 0 ) 
-			uso();
-
-
 		ArgumentProcessorProyecto1.separateList(args);
 		boolean printReverse = ArgumentProcessorProyecto1.printReverse();
-		
-
 
 		Lista<String> filesList = ArgumentProcessorProyecto1.getFilesList();
-		if ( filesList.getLongitud() == 0 ) 
+		Lista<String> lineas = new Lista<String>();
+		if ( filesList.getLongitud() == 0 ) {
 			System.out.println("No se encontraron archivos, se leera de la entrada estandar");
-
-		Lista<String> lineas = lectura(filesList);
+			try {			
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				carga(br,lineas);
+				br.close();
+			} catch (IOException ioe) {
+				uso();
+				System.exit(1);
+			}
+		} else {
+			lineas = lectura(filesList);
+		}
 
 		Lista<String> ordenada = lineas.mergeSort(new StringLexicographicalComparator());
 		if ( printReverse ) {
